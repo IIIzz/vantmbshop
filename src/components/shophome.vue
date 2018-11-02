@@ -5,8 +5,9 @@
   left-text="返回"
   left-arrow
   :fixed='true'
-  
-/> 
+  > 
+<van-icon name="contact" slot="right" />
+ </van-nav-bar>
 <div class="toorbar-content">
 <ul>
   <li v-for="(i,key) in toorbar" :key="key" class="listyle"  v-bind:class="{active:i.active==true}" @click="choosebar(key)">{{i.name}}</li>
