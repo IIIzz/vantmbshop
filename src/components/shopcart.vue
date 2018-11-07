@@ -1,12 +1,21 @@
 <template>
 <div >
-   <van-card v-for="(i,key) in shopdata" :key="key"
+  <van-nav-bar
+  title="购物车"
+  left-text="返回"
+  left-arrow
+  :fixed='true'
+  @click-left="onClickLeft"
+  > 
+ </van-nav-bar>
+ <div style="padding-top:.9rem">
+ </div>
+   <van-card  v-for="(i,key) in shopdata" :key="key"
   :num="i.selectedNum"
   :thumb='i.selectedSkuComb.picture'
-  tag="标签"
+  tag="11.11"
   :price="i.selectedSkuComb.price/100"
-  desc="描述信息"  
-  title="商品标题"
+  :title="i.selectedSkuComb.title"
 >
   <div slot="footer">
     <van-stepper v-model="i.selectedNum" />
@@ -50,7 +59,10 @@ export default {
   },
   methods: {
     govuex: function() {},
-    shopcartbuy() {}
+    shopcartbuy() {},
+    onClickLeft(){
+    this.$router.back(-1)
+    }
   }
 };
 </script>

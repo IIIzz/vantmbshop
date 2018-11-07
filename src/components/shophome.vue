@@ -58,10 +58,14 @@
 
 </van-list>
 
-<!-- <div class="shop-cart-icon">
-  <van-icon name="shopping-cart" color="red"/>
-  <van-icon name="upgrade" color="red"/>
-</div> -->
+<div class="shop-cart-icon" @click="gotocart">
+  <div style="position: absolute;right:-.1rem;width:.4rem;height:.4rem;border-radius:50%;background-color:red;color:white;text-align:center;line-height:.4rem">
+    {{cartnum.num}}
+  </div>
+  <van-icon name="shopping-cart" color="red" />
+  <!-- <van-icon name="upgrade" color="red"/> -->
+</div>
+
 </div>
 </template>
 
@@ -173,10 +177,18 @@ export default {
        this.api.prodlis().then(res=>{
          this.prods_list=res.data.prodlist
        })
+    },
+    gotocart:function(){
+      this.$router.push('/shopcart')
     }
   },
   mounted:function(){
     this.getprods()
+  },
+  computed:{
+    cartnum(){
+      return this.$store.getters.shopcartdata;
+    }
   }
 };
 </script>

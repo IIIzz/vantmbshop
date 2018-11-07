@@ -8,19 +8,20 @@
   @click-left="onClickLeft"
 /> 
     <van-swipe style="padding-top:.4rem" class="goods-swipe" :autoplay="3000">
-      <van-swipe-item v-for="thumb in goods.thumb" :key="thumb">
+      <van-swipe-item v-for="thumb in skuData.goods.thumb" :key="thumb">
         <img :src="thumb" >
       </van-swipe-item>
     </van-swipe>
 
     <van-cell-group>
       <van-cell>
-        <div class="goods-title">{{ goods.title }}</div>
-        <div class="goods-price">{{ formatPrice(goods.price) }}</div>
+        <!-- {{skuData.goods.price}} -->
+        <div class="goods-title">{{ skuData.goods.title }}</div>
+        <div class="goods-price">{{ formatPrice(skuData.goods.price) }}</div>
       </van-cell>
       <van-cell class="goods-express">
-        <van-col span="10">运费：{{ goods.express }}</van-col>
-        <van-col span="14">剩余：{{ goods.remain }}</van-col>
+        <van-col span="10">运费：{{ skuData.goods.express }}</van-col>
+        <van-col span="14">剩余：{{ skuData.goods.remain }}</van-col>
       </van-cell>
     </van-cell-group>
 
@@ -48,7 +49,7 @@
       <van-goods-action-big-btn @click="showCustom=true">
         加入购物车
       </van-goods-action-big-btn>
-      <van-goods-action-big-btn primary @click="showCustom=true">
+      <van-goods-action-big-btn primary @click="sorry">
         立即购买
       </van-goods-action-big-btn>
     </van-goods-action>
@@ -100,6 +101,9 @@ export default {
       skuData:{
          sku:{
          },
+         goods:{
+
+         }
       },
       showCustom:false,
       advancedUsage:'有赞',
@@ -111,16 +115,16 @@ export default {
         s1: '',
         s2: ''
       },
-      goods: {
-        title: '美国伽力果（约680g/3个）',
-        price: 2680,
-        express: '免运费',
-        remain: 19,
-        thumb: [
-          'https://img.yzcdn.cn/public_files/2017/10/24/e5a5a02309a41f9f5def56684808d9ae.jpeg',
-          'https://img.yzcdn.cn/public_files/2017/10/24/1791ba14088f9c2be8c610d0a6cc0f93.jpeg'
-        ]
-      },
+      // goods: {
+      //   title: '美国伽力果（约680g/3个）',
+      //   price: 2680,
+      //   express: '免运费',
+      //   remain: 19,
+      //   thumb: [
+      //     'https://img.yzcdn.cn/public_files/2017/10/24/e5a5a02309a41f9f5def56684808d9ae.jpeg',
+      //     'https://img.yzcdn.cn/public_files/2017/10/24/1791ba14088f9c2be8c610d0a6cc0f93.jpeg'
+      //   ]
+      // },
         customSkuValidator: (component) => {
         return '请选择xxx';
       },
@@ -157,7 +161,7 @@ export default {
      this.$router.back(-1)
     },
     formatPrice() {
-      return '¥' + (this.goods.price / 100).toFixed(2);
+      return '¥' + (this.skuData.goods.price / 100).toFixed(2);
     },
 
     onClickCart() {
@@ -165,7 +169,7 @@ export default {
     },
 
     sorry() {
-      this.$toast('暂无后续逻辑');
+      this.$toast('暂只支持加入购物车');
     },
      onBuyClicked(data) {
        
@@ -173,8 +177,8 @@ export default {
 
     onAddCartClicked(data) {
       //  this.$toast('积分兑换');
-      console.log(data)
       this.$store.dispatch('setshopCart',data)
+       this.$toast.success('加入购物车成功');
     },
 
     onPointClicked() {

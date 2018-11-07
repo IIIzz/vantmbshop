@@ -17,9 +17,9 @@ export default {
   methods: {
  
   },
-  // mounted:function(){
+  mounted:function(){
   // this.$store.commit('clear')
-  // }
+  }
 }
 </script>
 
