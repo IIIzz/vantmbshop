@@ -2,11 +2,9 @@
 <div class="shop-list-box">
  <van-nav-bar
   title="零食小铺"
-  left-text="返回"
-  left-arrow
   :fixed='true'
   > 
-<van-icon name="contact" slot="right" />
+<van-icon name="contact" slot="left" />
  </van-nav-bar>
 <div class="toorbar-content">
 <ul>
@@ -185,7 +183,7 @@ export default {
     gotocart:function(){
       this.$router.push('/shopcart')
     },
-    
+
     scrollFun() {
   //      clearTimeout(this.timer);
   // this.timer = setTimeout(this.isScrollEnd, 1000);
