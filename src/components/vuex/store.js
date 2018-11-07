@@ -27,6 +27,9 @@ const mutations = {
 	},
 	shopcartcomputed(state,value){
 		state.shopcartprods=value
+	},
+	deleteproduct(state,i){
+		state.shopcartprods=state.shopcartprods.splice(i,1)
 	}
 }
 const actions={
@@ -60,6 +63,19 @@ const actions={
 		}else{
 			Object.assign(products,{index:0})
 			commit('storeproduct',products)
+		}	
+	},
+	deleteprod({commit,state},products){
+		let arr=[]
+		for(var i=0;i<state.shopcartprods.length;i++){
+					//先将goods_id和当前size的id放到数组 后面判断添加的 在arr中是否有
+			arr.push({goods_id:state.shopcartprods[i].goodsId,good_id:state.shopcartprods[i].selectedSkuComb.id})
+		}
+		let brr={goods_id:products.goodsId,good_id:products.selectedSkuComb.id}
+		for(var i=0;i<state.shopcartprods.length;i++){
+			if(arr[i].goods_id==brr.goods_id&&arr[i].good_id==brr.good_id){
+				commit('deleteproduct',i)
+ 			}
 		}	
 	}
 

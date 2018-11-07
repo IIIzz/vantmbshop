@@ -10,7 +10,9 @@
  </van-nav-bar>
  <div style="padding-top:.9rem">
  </div>
-   <van-card  v-for="(i,key) in shopdata" :key="key"
+ <van-swipe-cell :right-width="65" :on-close="onClose" v-for="(i,key) in shopdata" :key="key">
+  <van-cell-group >
+   <van-card  
   :num="i.selectedNum"
   :thumb='i.selectedSkuComb.picture'
   tag="11.11"
@@ -19,16 +21,16 @@
 >
   <div slot="footer">
     <van-stepper v-model="i.selectedNum" />
-    <!-- <van-button size="mini">按钮</van-button>
-    <van-button size="mini" @click="govuex">按钮</van-button> -->
   </div>
 </van-card>
+  </van-cell-group>
+  <span slot="right" @click="deletecart(i)">删除</span>
+</van-swipe-cell>
 <van-submit-bar
   :price="shopcartdata.price"
   button-text="提交订单"
   @submit="shopcartbuy"
 />
-   <!-- <van-button style="position:fixed;bottom:0" type="primary" bottom-action @click="shopcartbuy">立即购买</van-button>  -->
 
 </div>
 
@@ -62,8 +64,46 @@ export default {
     shopcartbuy() {},
     onClickLeft(){
     this.$router.back(-1)
+    },
+     onClose(clickPosition, instance) {
+      switch (clickPosition) {
+        case 'left':
+        case 'cell':
+        case 'outside':
+          instance.close();
+          break;
+        case 'right':
+        instance.close();
+
+          break;
+      }
+    },
+    deletecart:function(data){
+     this.$store.dispatch('deleteprod',data)
+     
     }
   }
 };
 </script>
+<style lang="less"> 
+// @import '../../style/var';
 
+// .demo-swipe-cell {
+  // user-select: none;
+  // van-swipe-cell__right
+  .van-swipe-cell__right {  
+        color: white;
+      font-size: 15px;
+      width: 65px;
+      height: 100px;
+      display: inline-block;
+      text-align: center;
+      line-height: 100px;
+      background-color: red;
+    
+  }
+  .van-swipe-cell{
+    padding-top: 5px;
+  }
+// }
+</style>

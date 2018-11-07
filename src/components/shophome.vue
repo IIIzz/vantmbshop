@@ -58,7 +58,7 @@
 
 </van-list>
 
-<div class="shop-cart-icon" @click="gotocart">
+<div id="cart-id" class="shop-cart-icon" @click="gotocart">
   <div style="position: absolute;right:-.1rem;width:.4rem;height:.4rem;border-radius:50%;background-color:red;color:white;text-align:center;line-height:.4rem">
     {{cartnum.num}}
   </div>
@@ -144,8 +144,12 @@ export default {
           img:
             "https://m.360buyimg.com/mobilecms/jfs/t21481/263/412160889/15938/4246b4f8/5b0cea29N8fb2865f.png"
         }
-      ]
+      ],
+      t1 :0,
+     t2 :0,
+     timer :null, // 定时器
     };
+     
   },
 
   methods: {
@@ -180,11 +184,34 @@ export default {
     },
     gotocart:function(){
       this.$router.push('/shopcart')
-    }
+    },
+    
+    scrollFun() {
+  //      clearTimeout(this.timer);
+  // this.timer = setTimeout(this.isScrollEnd, 1000);
+  // this.t1 = document.documentElement.scrollTop || document.body.scrollTop;
+  //     console.log('滚动了')
+  //     let cart=document.getElementById('cart-id')
+  //     cart.className='shop-cart-none'
+    },
+ isScrollEnd:function() {
+  // this.t2 = document.documentElement.scrollTop || document.body.scrollTop;
+  // if(this.t2 == this.t1){
+  //   let cart=document.getElementById('cart-id')
+  //     cart.className='shop-cart-icon'
+  //   console.log('滚动结束了')
+  // }
+}
+
   },
   mounted:function(){
     this.getprods()
+    window.addEventListener('scroll', this.scrollFun)
   },
+ //这个页面是keepalive的 跳转不会销毁
+		destroyed() {
+			window.removeEventListener('scroll', this.scrollFun)
+		},
   computed:{
     cartnum(){
       return this.$store.getters.shopcartdata;
@@ -200,16 +227,29 @@ export default {
     position: fixed;
     bottom: .8rem;
     right: .8rem;
-    border:solid #efeff4 .01rem;
+    background: white;
+    border:solid pink .01rem;
     // background: #dcdcdc;
     // opacity: 0.5;
     z-index: 1001;
+        animation:cartmove 2s 1;
+-webkit-animation:cartmove 2s 1; /*Safari and Chrome*/
     .van-icon{
       height: 100%;
       width: 100%;
       position: relative;
+  
       
     }
+    @keyframes cartmove
+{
+  0%{
+     transform: translateX(1.5rem)
+  }
+  100%{
+transform: translateX(0)
+  }
+}
 .van-icon::before{
   position: absolute;
   left: 50%;
