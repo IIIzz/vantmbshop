@@ -1,5 +1,5 @@
 <template>
-  <div class="goods">
+  <div class="goods" v-if="skuData!=''">
      <van-nav-bar
   title="标题"
   left-text="返回"
@@ -45,7 +45,7 @@
       <van-goods-action-mini-btn icon="cart" @click="onClickCart">
         购物车
       </van-goods-action-mini-btn>
-      <van-goods-action-big-btn @click="sorry">
+      <van-goods-action-big-btn @click="showCustom=true">
         加入购物车
       </van-goods-action-big-btn>
       <van-goods-action-big-btn primary @click="showCustom=true">
@@ -57,15 +57,16 @@
           v-model="showCustom"
           :stepper-title="stepperTitle"
           :sku="skuData.sku"
-          :goods="skuData.goods_info"
+          :goods="skuData.sku"
           :goods-id="skuData.goods_id"
           :hide-stock="skuData.sku.hide_stock"
           :quota="skuData.quota"
           :quota-used="skuData.quota_used"
+          :img="skuData.sku.picture"
           show-add-cart-btn
           reset-stepper-on-hide
           :initial-sku="initialSku"
-          :message-config="messageConfig"
+          :message-config="skuData.sku"
           @buy-clicked="onBuyClicked"
           @add-cart="onAddCartClicked"
           :close-on-click-overlay="true"
@@ -77,8 +78,9 @@
           </template>
           <template slot="sku-actions" slot-scope="props">
             <div class="van-sku-actions">
-              <van-button bottom-action >{{ button1}}</van-button>
-              <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')">{{ button2}}</van-button>
+              <van-button bottom-action @click="props.skuEventBus.$emit('sku:addCart')">确定</van-button>
+              <!-- <van-button bottom-action @click="props.skuEventBus.$emit('sku:add-cart')">{{ button1}}</van-button>
+              <van-button type="primary" bottom-action @click="props.skuEventBus.$emit('sku:buy')">{{ button2}}</van-button> -->
             </div>
           </template>
         </van-sku>
@@ -88,13 +90,17 @@
 
 <script>
 
-import skuData from './data.js';
+// import skuData from './data.js';
 // import func from './vue-temp/vue-editor-bridge.js';
 export default {
 
   data() {
-     this.skuData = skuData;
+    //  this.skuData = skuData;
     return {
+      skuData:{
+         sku:{
+         },
+      },
       showCustom:false,
       advancedUsage:'有赞',
       title2: '自定义步进器相关配置',
@@ -102,8 +108,8 @@ export default {
       button1: '积分兑换',
       button2: '买买买',
       initialSku: {
-        s1: '30349',
-        s2: '1193'
+        s1: '',
+        s2: ''
       },
       goods: {
         title: '美国伽力果（约680g/3个）',
@@ -155,22 +161,30 @@ export default {
     },
 
     onClickCart() {
-      this.$router.push('cart');
+      this.$router.push('/shopcart');
     },
 
     sorry() {
       this.$toast('暂无后续逻辑');
     },
      onBuyClicked(data) {
-      this.$toast(JSON.stringify(data));
+       
     },
 
     onAddCartClicked(data) {
-      this.$toast(JSON.stringify(data));
+      //  this.$toast('积分兑换');
+      console.log(data)
+      this.$store.dispatch('setshopCart',data)
     },
 
     onPointClicked() {
       this.$toast('积分兑换');
+    },
+    getproddetail:function(){
+      let id=this.$route.query.id
+    this.api.proddetail(id).then(res=>{
+      this.skuData=res.data.proddetail
+    })
     }
 //     customStepperConfig: {
 //   // 自定义限购文案
@@ -185,7 +199,12 @@ export default {
 // }
   },
   mounted:function(){
+    
+
   //  console.log(Vant)
+  },
+  created:function(){
+this.getproddetail()
   }
 };
 </script>

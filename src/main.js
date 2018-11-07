@@ -10,6 +10,9 @@ import 'vant/lib/vant-css/index.css';
 import Vuex from 'vuex'
 import store from './components/vuex/store'
 
+import _api from '@/api/api'
+
+Vue.prototype.api=_api
 Vue.use(Vuex)
 Vue.use(Vant)
 Vue.config.productionTip = false

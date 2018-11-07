@@ -7,7 +7,19 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data() {
+    // this.url=url
+    return {
+    };
+  },
+
+  methods: {
+ 
+  },
+  // mounted:function(){
+  // this.$store.commit('clear')
+  // }
 }
 </script>
 

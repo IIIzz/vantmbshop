@@ -30,25 +30,25 @@
   :finished="finished"
   @load="onLoad"
 >
-<div class="shop-detail-list" v-for="(item,key) in list" :key="key" @click="shopDentail(item)">
+<div class="shop-detail-list" v-for="(item,key) in prods_list" :key="key" @click="shopDentail(item)">
   <div class="shop-detail-img">
-    <img :src="imgsrc">
+    <img :src="item.imgsrc">
   </div>
   <div class="shop-detail-intro">
     <p style="font-size:.35rem;font-weight:bold;">
-      云南蜜桔
+      {{item.title}}
     </p>
     <div class="shop-area">
-    <div><span style="font-size:.3rem">鲜嫩多汁</span><br><span style="color:rgb(204, 204, 204);font-size:.28rem;margin-top:50px">产品特点</span></div>
+    <div><span style="font-size:.3rem">{{item.descrip}}</span><br><span style="color:rgb(204, 204, 204);font-size:.28rem;margin-top:50px">产品特点</span></div>
     <div style="width:1px;border:0.01rem solid #cccccc;margin:0 10px;box-sizing:border-box;"></div>
-    <div> <span style="font-size:.3rem">澳洲</span><br><span style="color:rgb(204, 204, 204);font-size:.28rem">产地</span></div>
+    <div> <span style="font-size:.3rem">{{item.from}}</span><br><span style="color:rgb(204, 204, 204);font-size:.28rem">产地</span></div>
     </div>
     <p style="color:rgb(204, 204, 204);font-size:.24rem">已售出 1133件</p>
-    <span style="color:#ff6000;font-size:.28rem">¥19.</span><span style="color:#ff6000;font-size:.23rem">50</span><span style="color:rgb(204, 204, 204);font-size:.28rem">  / 1.5kg/份</span>
+    <span style="color:#ff6000;font-size:.28rem">¥{{item.price}}</span><span style="color:rgb(204, 204, 204);font-size:.28rem">  / {{item.height}}/份</span>
 
   </div>
   <div class="shop-cart"> 
-    <van-icon name="shopping-cart" color="red"/>
+    <van-icon name="add-o" color="red"/>
   </div>  
 </div>
   <div slot="footer">
@@ -57,6 +57,11 @@
   </div>
 
 </van-list>
+
+<!-- <div class="shop-cart-icon">
+  <van-icon name="shopping-cart" color="red"/>
+  <van-icon name="upgrade" color="red"/>
+</div> -->
 </div>
 </template>
 
@@ -67,6 +72,7 @@ export default {
     // this.url=url
     return {
       imgsrc: "http://zy.whaoot.com/dmodel/origain.jpg",
+      prods_list:[],
       list: [],
       loading: false,
       finished: false,
@@ -155,18 +161,51 @@ export default {
       }, 500);
     },
     shopDentail: function(data) {
-      this.$router.push({ path: "/cpydetail", query: { id: data } });
+      this.$router.push({ path: "/cpydetail", query: { id: data.id } });
     },
     choosebar: function(i) {
       for (let j = 0; j < this.toorbar.length; j++) {
         this.toorbar[j].active = false;
       }
       this.toorbar[i].active = true;
+    },
+    getprods:function(){
+       this.api.prodlis().then(res=>{
+         this.prods_list=res.data.prodlist
+       })
     }
+  },
+  mounted:function(){
+    this.getprods()
   }
 };
 </script>
 <style lang="less" >
+.shop-cart-icon{
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    position: fixed;
+    bottom: .8rem;
+    right: .8rem;
+    border:solid #efeff4 .01rem;
+    // background: #dcdcdc;
+    // opacity: 0.5;
+    z-index: 1001;
+    .van-icon{
+      height: 100%;
+      width: 100%;
+      position: relative;
+      
+    }
+.van-icon::before{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 20px;
+}
+  }
 .selector::-webkit-scrollbar {
   display: none;
 }
@@ -285,5 +324,6 @@ export default {
   .van-swipe {
     padding-top: 5rem;
   }
+  
 }
 </style> 
